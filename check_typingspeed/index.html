@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Typing_speed</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="script" href="./javascript">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,400;1,300&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="main">
+      <div class="center">
+        <h1>welcome to typing speed test</h1>
+        <h3 id="msg"></h3>
+        <br />
+        <textarea
+          placeholder="Remember me be nice!"
+          id="text"
+          cols="100"
+          rows="10"
+        ></textarea>
+        <br />
+        <button id="btn">start</button>
+      </div>
+    </div>
+
+    <script>
+      const setofwords = [
+        "A paragraph is a series of sentences that are organized and coherent, and are all related to a single topic",
+        " This is because paragraphs show a reader where the subdivisions of an essay begin and end,",
+        "Paragraphs can contain many different kinds of information.",
+        "A well-organized paragraph supports or develops a single controlling idea,",
+        "Although most paragraphs should have a topic sentence, there are a few situations when a paragraph might not need a topic sentence.",
+      ];
+      const msg=document.getElementById("msg");
+      const words=document.getElementById("text");
+      const btn =document.getElementById("btn");
+      let startTime,endTime;
+      const wordCounter=(str)=>{
+          let res=str.split(" ").length;
+          return res;
+      }
+       const playgames=()=>{
+         const randomnumber=Math.floor(Math.random()*setofwords.length)
+          msg.innerText=setofwords[randomnumber];
+          let date=new Date();
+          startTime=date.getTime();
+          btn.innerText="Done";
+        }
+        const compareWord=(str1,str2)=>{
+            let words1=str1.split(" ");
+            let words2=str2.split(" ");
+             let cnt=0;
+            words1.forEach(function(item,index){
+              if(item===words2[index])
+                 cnt++;
+            })
+            let errorWords=words1.length-cnt;
+            return (`${cnt} correct out of ${words1.length} word and the total number of error are  ${errorWords}.`);
+        }
+        const endplay = () =>{
+             let date=new Date();
+             endTime=date.getTime();
+             let totaltime=(endTime-startTime)/1000;
+             let wordCount=wordCounter(words.value);
+             console.log(endTime,startTime);
+             console.log(totaltime,wordCount);
+             let speed=(Math.round(wordCount*60/totaltime));
+             let finalmsg=`you typed total at ${speed} words per minutes and `;
+             finalmsg+=compareWord(msg.innerText,words.value);
+             msg.innerText=(finalmsg);
+             words.value="";
+        }
+
+      btn.addEventListener('click',function(){
+          if(this.innerText==="start"){
+             words.disabled=false;
+             playgames();
+          }
+          else if(this.innerText==="Done"){
+             words.disabled=true;
+             btn.innerText="start";
+             endplay();
+          }
+      })
+    </script>
+  </body>
+</html>
